@@ -19,5 +19,9 @@ jobs:
            oidc-provider-name: 'yoavh-github'
            oidc-audience: 'support'
            version: latest
-       - name: Set CLI Config
+       - name: Ping Artifactory
          run: jf rt ping
+       - name: Download file
+         run: jf rt dl example-repo-local/file.txt .
+       - name: Show file content
+         run: cat file.txt
