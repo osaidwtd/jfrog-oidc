@@ -18,5 +18,6 @@ jobs:
          with:
            oidc-provider-name: 'yoavh-github'
            oidc-audience: 'support'
+           version: latest
        - name: Set CLI Config
          run: jf rt ping
