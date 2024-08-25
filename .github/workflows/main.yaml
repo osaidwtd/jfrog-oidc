@@ -9,6 +9,8 @@ jobs:
   build:
      runs-on: ubuntu-latest
      steps:
+       - name: Print
+         run: env | sort
        - name: Checkout
          uses: actions/checkout@v4
        - name: Setup JFrog CLI
