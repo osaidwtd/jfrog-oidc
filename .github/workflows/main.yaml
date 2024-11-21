@@ -23,9 +23,16 @@ jobs:
            version: latest
        - name: Ping Artifactory
          run: jf rt ping
-       - name: Download file
-         run: jf rt dl example-repo-local/file.txt .
-       - name: Show file content
-         run: cat file.txt
+       - name: python config
+         run: jf pip-config --repo-resolve=yoavh-pypi-remote
+       - name: build
+         run: jf pip install -r requirements.txt
+
+
+         
+       # - name: Download file
+       #   run: jf rt dl example-repo-local/file.txt .
+       # - name: Show file content
+       #   run: cat file.txt
 
          
