@@ -22,10 +22,10 @@ jobs:
            version: latest
        - name: Ping Artifactory
          run: jf rt ping
-       - name: python config
-         run: jf pip-config --repo-resolve=yoavh-pypi-remote
-       - name: build
-         run: jf pip install -r requirements.txt
+       # - name: python config
+       #   run: jf pip-config --repo-resolve=yoavh-pypi-remote
+       # - name: build
+       #   run: jf pip install -r requirements.txt
 
 
          
