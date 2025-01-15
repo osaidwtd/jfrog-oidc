@@ -18,8 +18,7 @@ jobs:
          env:  
            JF_URL: ${{ secrets.JF_URL }}
          with:
-           oidc-provider-name: 'yoavh-github'
-           oidc-audience: 'support'
+           oidc-provider-name: 'yoavh-new'
            version: latest
        - name: Ping Artifactory
          run: jf rt ping
