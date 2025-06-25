@@ -15,18 +15,16 @@ jobs:
          uses: actions/checkout@v4
        - name: Setup JFrog CLI
          uses: jfrog/setup-jfrog-cli@v4
-         env:  
-           JF_URL: ${{ secrets.JF_URL }}
+         env:
+           JF_URL: https://evidencetrial.jfrog.io
          with:
-           oidc-provider-name: 'yoavh-new'
-           version: latest
+           oidc-provider-name: dorty
        - name: Ping Artifactory
          run: jf rt ping
-       - name: python config
-         run: jf pip-config --repo-resolve=yoavh-pypi-remote
-       - name: build
-         run: jf pip install -r requirements.txt
-
+       - name: upload artifact
+         run: jf rt u file3.txt dort-generic/file3.txt --build-name dort --build-number 1 
+       - name: create evidence
+         run: jf evd create --subject-repo-path dort-generic/file3.txt --subject-sha256 2e173de76a17faab5b126309357e3fc39cf70678d484ef4a9eb08ae6752ac9fa --key private.pem --key-alias dort-test --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 
 
          
        # - name: Download file
