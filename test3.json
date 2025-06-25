@@ -1,0 +1,47 @@
+{
+  "codeReview": {
+    "reviewId": "CR-2023-002",
+    "projectName": "Project Beta",
+    "repositoryUrl": "https://github.com/example/repo",
+    "filesReviewed": [
+      {
+        "fileName": "src/main.py",
+        "linesReviewed": "30-150",
+        "comments": [
+          {
+            "line": 45,
+            "comment": "improve readability.",
+            "resolved": true
+          },
+          {
+            "line": 100,
+            "comment": "Ensure proper exception handling here.",
+            "resolved": false
+          }
+        ]
+      },
+      {
+        "fileName": "README.md",
+        "linesReviewed": "1-20",
+        "comments": []
+      }
+    ],
+    "reviewer": {
+      "name": "dort",
+      "email": "dort@example.com",
+      "role": "Senior Developer"
+    },
+    "reviewee": {
+      "name": "Bob",
+      "email": "bob@example.com",
+      "role": "Junior Developer"
+    },
+    "dateReviewed": "2023-10-15",
+    "status": "Approved",
+    "approvalComments": "Great work overall! Address the outstanding comment before merging.",
+    "nextSteps": [
+      "Resolve outstanding comments",
+      "Merge to main branch"
+    ]
+  }
+}
