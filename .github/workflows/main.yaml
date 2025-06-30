@@ -21,6 +21,8 @@ jobs:
            oidc-provider-name: dorty
        - name: Ping Artifactory
          run: jf rt ping
+       - name: Create Access Token
+         run: jf atc dort
        - name: upload artifact
          run: jf rt u file3.txt dort-generic/file3.txt --build-name dort --build-number 1 
        - name: create evidence
