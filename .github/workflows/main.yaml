@@ -16,7 +16,7 @@ jobs:
        - name: Setup JFrog CLI
          uses: jfrog/setup-jfrog-cli@v4
          env:
-           JF_URL: https://evidencetrial.jfrog.io
+           JF_URL: https://evidencetrial.jfrog.io/
          with:
            oidc-provider-name: dorty
        - name: Ping Artifactory
