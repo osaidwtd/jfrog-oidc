@@ -16,9 +16,9 @@ jobs:
        - name: Setup JFrog CLI
          uses: jfrog/setup-jfrog-cli@v4
          env:
-           JF_URL: http://localhost:8082/
+           JF_URL: https://evidencetrial.jfrog.io
          with:
-           oidc-provider-name: osaid
+           oidc-provider-name: dorty
        - name: Ping Artifactory
          run: jf rt ping
        - name: upload artifact
