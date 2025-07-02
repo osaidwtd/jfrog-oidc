@@ -26,6 +26,7 @@ jobs:
        - name: create evidence
          run: jf evd create --subject-repo-path dort-generic/file3.txt --subject-sha256 2e173de76a17faab5b126309357e3fc39cf70678d484ef4a9eb08ae6752ac9fa --key private.pem --key-alias dort-test --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 
 
+
          
        # - name: Download file
        #   run: jf rt dl example-repo-local/file.txt .
