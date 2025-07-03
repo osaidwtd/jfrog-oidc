@@ -18,7 +18,7 @@ jobs:
          env:
            JF_URL: https://a0a0-94-188-248-101.ngrok-free.app
          with:
-           oidc-provider-name: osaidtest
+           oidc-provider-name: providerowtd
        - name: Ping Artifactory
          run: jf rt ping
        - name: upload artifact
