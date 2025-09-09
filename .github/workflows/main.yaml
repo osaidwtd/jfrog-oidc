@@ -16,7 +16,7 @@ jobs:
        - name: Setup JFrog CLI
          uses: jfrog/setup-jfrog-cli@v4
          env:
-           JF_URL: https://9d32c6f2f864.ngrok-free.app
+           JF_URL: https://3f978e480812.ngrok-free.app
          with:
            oidc-provider-name: yyyy
        - name: Ping Artifactory
