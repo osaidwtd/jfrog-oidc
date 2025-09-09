@@ -16,13 +16,13 @@ jobs:
        - name: Setup JFrog CLI
          uses: jfrog/setup-jfrog-cli@v4
          env:
-           JF_URL: https://evidencetrial.jfrog.io
+           JF_URL: https://9d32c6f2f864.ngrok-free.app
          with:
-           oidc-provider-name: osaidtest
+           oidc-provider-name: localtest
        - name: Ping Artifactory
          run: jf rt ping
        - name: create evidence
-         run: jf evd create --build-name bookverse-checkout_CI_build-test-publish --project bookverse --build-number 99-1 --key private.pem --key-alias dort-test --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1
+         run: jf evd create --build-name Catalina-Build --project catalina --build-number 1.2.A --key private.pem --key-alias dort-test --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1
 
          
        # - name: Download file
