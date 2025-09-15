@@ -18,7 +18,7 @@ jobs:
          env:
            JF_URL: https://fdc3879caf53.ngrok-free.app
          with:
-           oidc-provider-name: yyyy
+           oidc-provider-name: localtest
        - name: Ping Artifactory
          run: jf rt ping
        - name: create evidence
