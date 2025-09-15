@@ -13,7 +13,7 @@ jobs:
          uses: jfrog/setup-jfrog-cli@v4
          env:
            JF_URL: https://fdc3879caf53.ngrok-free.app
-           JF_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
          with:
           version: latest
        - name: Ping Artifactory
