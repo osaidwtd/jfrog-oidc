@@ -19,6 +19,8 @@ jobs:
        - name: Ping Artifactory
          run: jf rt ping
        - name: create evidence
+         env:
+           JFORG_KEY:  ${{ var.JFORG_KEY }}
          run: jf evd create --key private.pem --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --subject-repo-path commons-dev-generic-local/file3.txt
          # run: jf evd create --build-name Catalina-Build --project catalina --build-number 1.2.A --key private.pem --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1
          # run: jf evd create --project catalina --key private.pem --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --release-bundle yonanan --release-bundle-version 1
