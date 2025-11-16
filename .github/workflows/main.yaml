@@ -12,8 +12,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      JF_URL: https://fdc3879caf53.ngrok-free.app
-      JF_REGISTRY: fdc3879caf53.ngrok-free.app
+      JF_URL: https://3a910535a583.ngrok-free.app
+      JF_REGISTRY: 3a910535a583.ngrok-free.app
       JF_DOCKER_REPO: local-oci-bug-hunt-a
       IMAGE_NAME: alpine
 
