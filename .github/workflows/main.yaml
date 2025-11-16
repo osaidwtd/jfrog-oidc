@@ -61,7 +61,7 @@ jobs:
           context: .
           push: true
           # THIS CREATES THE NESTED PATH: alpine/test1/<run_number>
-          tags: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test1:${{ github.run_number }}
+          tags: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test2:${{ github.run_number }}
           provenance: false
           sbom: false
 
@@ -69,17 +69,9 @@ jobs:
         uses: actions/attest-build-provenance@v3
         with:
           # BUG: subject-name doesn't include the tag number, causing path mismatch
-          subject-name: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test1
+          subject-name: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test2
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
-
-      # === Your Original Evidence Creation (keep if needed) ===
-      - name: Create Generic Evidence (optional)
-        env:
-          JFROG_CLI_SIGNING_KEY: ${{ vars.JFROG_CLI_SIGNING_KEY }}
-        run: |
-          echo '{"approved": "true", "approver": "osaid"}' > test3.json
-          jf evd create --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --subject-repo-path commons-dev-generic-local/file3.txt
 
 
 
