@@ -61,7 +61,7 @@ jobs:
           context: .
           push: true
           # THIS CREATES THE NESTED PATH: alpine/test3/<run_number>
-          tags: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}:100
+          tags: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/testo:100
           provenance: false
           sbom: false
 
@@ -69,7 +69,7 @@ jobs:
         uses: actions/attest-build-provenance@v3
         with:
           # subject-name: oci://${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test4
-          subject-name: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}
+          subject-name: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/testo
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
 
