@@ -61,14 +61,14 @@ jobs:
           context: .
           push: true
           # THIS CREATES THE NESTED PATH: alpine/test3/<run_number>
-          tags: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test3:${{ github.run_number }}
+          tags: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test4:${{ github.run_number }}
           provenance: false
           sbom: false
 
       - name: Attest Docker Image and Send to JFrog Evidence
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test3
+          subject-name: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test4
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
 
