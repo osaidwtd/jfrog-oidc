@@ -1,33 +1,118 @@
-name: "JFrog Token Integration"
+name: "JFrog Token Integration with Docker Attestation"
+
 on: push
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  attestations: write
 
 jobs:
   build:
-     runs-on: ubuntu-latest
-     steps:
-       - name: Print
-         run: env | sort
-       - name: Checkout
-         uses: actions/checkout@v4
-       - name: Setup JFrog CLI
-         uses: jfrog/setup-jfrog-cli@v4
-         env:
-           JF_URL: https://fdc3879caf53.ngrok-free.app
-           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-         with:
+    runs-on: ubuntu-latest
+    env:
+      JF_URL: https://fdc3879caf53.ngrok-free.app
+      JF_REGISTRY: fdc3879caf53.ngrok-free.app
+      JF_DOCKER_REPO: local-oci-bug-hunt-a
+      IMAGE_NAME: alpine
+
+    steps:
+      - name: Print Environment
+        run: env | sort
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: ${{ env.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+        with:
           version: latest
-       - name: Ping Artifactory
-         run: jf rt ping
-       - name: create evidence
-         env:
-           JFROG_CLI_SIGNING_KEY: ${{ vars.JFROG_CLI_SIGNING_KEY }}
-         run: jf evd create --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --subject-repo-path commons-dev-generic-local/file3.txt
-         # run: jf evd create --build-name Catalina-Build --project catalina --build-number 1.2.A --key private.pem --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1
-         # run: jf evd create --project catalina --key private.pem --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --release-bundle yonanan --release-bundle-version 1
+
+      - name: Ping Artifactory
+        run: jf rt ping
+
+      # === Docker Image Build and Push ===
+      - name: Generate Dockerfile
+        run: |
+          cat << 'EOF' > Dockerfile
+          FROM alpine:latest
+          CMD echo "Hello, Docker World!"
+          EOF
+          cat Dockerfile
+
+      - name: Docker login to Artifactory
+        uses: docker/login-action@v3
+        with:
+          username: admin  # or use ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.JF_ACCESS_TOKEN }}
+          registry: ${{ env.JF_REGISTRY }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and Push Docker Image
+        id: build-and-push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          # THIS CREATES THE NESTED PATH: alpine/test1/<run_number>
+          tags: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test1:${{ github.run_number }}
+          provenance: false
+          sbom: false
+
+      - name: Attest Docker Image and Send to JFrog Evidence
+        uses: actions/attest-build-provenance@v3
+        with:
+          # BUG: subject-name doesn't include the tag number, causing path mismatch
+          subject-name: ${{ env.JF_REGISTRY }}/${{ env.JF_DOCKER_REPO }}/${{ env.IMAGE_NAME }}/test1
+          subject-digest: ${{ steps.build-and-push.outputs.digest }}
+          push-to-registry: true
+
+      # === Your Original Evidence Creation (keep if needed) ===
+      - name: Create Generic Evidence (optional)
+        env:
+          JFROG_CLI_SIGNING_KEY: ${{ vars.JFROG_CLI_SIGNING_KEY }}
+        run: |
+          echo '{"approved": "true", "approver": "osaid"}' > test3.json
+          jf evd create --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --subject-repo-path commons-dev-generic-local/file3.txt
+
+
+
+# name: "JFrog Token Integration"
+# on: push
+
+# jobs:
+#   build:
+#      runs-on: ubuntu-latest
+#      steps:
+#        - name: Print
+#          run: env | sort
+#        - name: Checkout
+#          uses: actions/checkout@v4
+#        - name: Setup JFrog CLI
+#          uses: jfrog/setup-jfrog-cli@v4
+#          env:
+#            JF_URL: https://fdc3879caf53.ngrok-free.app
+#            JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+#          with:
+#           version: latest
+#        - name: Ping Artifactory
+#          run: jf rt ping
+#        - name: create evidence
+#          env:
+#            JFROG_CLI_SIGNING_KEY: ${{ vars.JFROG_CLI_SIGNING_KEY }}
+#          run: jf evd create --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --subject-repo-path commons-dev-generic-local/file3.txt
+#          # run: jf evd create --build-name Catalina-Build --project catalina --build-number 1.2.A --key private.pem --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1
+#          # run: jf evd create --project catalina --key private.pem --predicate test3.json --predicate-type https://jfrog.com/evidence/approval/v1 --release-bundle yonanan --release-bundle-version 1
 
          
-       # - name: Download file
-       #   run: jf rt dl example-repo-local/file.txt .
-       # - name: Show file content
-       #   run: cat file.txt
+#        # - name: Download file
+#        #   run: jf rt dl example-repo-local/file.txt .
+#        # - name: Show file content
+#        #   run: cat file.txt
          
